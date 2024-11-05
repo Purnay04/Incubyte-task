@@ -16,4 +16,10 @@ class CalculatorTest {
     void add_nullString_zero() {
         Assertions.assertEquals(0, Calculator.add(null));
     }
+
+    @Test
+    void add_oneNumberString_sameNumber() {
+        Assertions.assertEquals(1, Calculator.add("1"));
+        Assertions.assertEquals(22, Calculator.add("22"));
+    }
 }
