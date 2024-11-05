@@ -9,7 +9,7 @@ public class Calculator {
 
     public final static String DEFAULT_DELIMITER = ",";
     public final static String NEW_LINE = "\n";
-    static int add(String numbers) {
+    static int add(String numbers) throws NegativeValueException {
         if(StringUtils.isEmpty(numbers)) {
             return 0;
         } else if(numbers.startsWith("//")) {
@@ -40,7 +40,11 @@ public class Calculator {
         return Optional.empty();
     }
 
-    static int sumOfStringArr(String[] numberArray) {
+    static int sumOfStringArr(String[] numberArray) throws NegativeValueException {
+        int[] negativeValues = Arrays.stream(numberArray).filter(StringUtils::isNotEmpty).mapToInt(Integer::parseInt).filter(num -> num < 0).toArray();
+        if(negativeValues.length > 0) {
+            throw new NegativeValueException(negativeValues);
+        }
         return Arrays.stream(numberArray).filter(StringUtils::isNotEmpty).mapToInt(Integer::parseInt).sum();
     }
 }
