@@ -30,4 +30,18 @@ class CalculatorTest {
         Assertions.assertEquals(10, Calculator.add("1,2,3,4"));
         Assertions.assertEquals(15, Calculator.add("1,2,3,8,1"));
     }
+
+    @Test
+    void add_numbersWithCommaSeparatedStringAndNewLineChar_addedResult() {
+        Assertions.assertEquals(1, Calculator.add("1,\n"));
+        Assertions.assertEquals(10, Calculator.add("1\n2,3,4"));
+        Assertions.assertEquals(10, Calculator.add("1\n,2,3,4"));
+        Assertions.assertEquals(50, Calculator.add("1\n2,3,4,25,15"));
+    }
+
+    @Test
+    void preprocess_numbersWithCommaSeparatedStringAndNewLineChar_replacedResult() {
+        Assertions.assertEquals("1,2,3,4", Calculator.preprocess("1\n2,3,4"));
+        Assertions.assertEquals("1,,2,3,4", Calculator.preprocess("1\n,2,3,4"));
+    }
 }
