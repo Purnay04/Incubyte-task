@@ -36,6 +36,7 @@ class CalculatorTest {
 
     @Test
     void add_numbersWithCommaSeparatedStringAndNewLineChar_addedResult() throws NegativeValueException {
+        Assertions.assertEquals(1, Calculator.add("1\n"));
         Assertions.assertEquals(1, Calculator.add("1,\n"));
         Assertions.assertEquals(10, Calculator.add("1\n2,3,4"));
         Assertions.assertEquals(10, Calculator.add("1\n,2,3,4"));
@@ -75,6 +76,11 @@ class CalculatorTest {
 
     @Test
     void add_numbersWithSomeNegativeNumberString_throwException() {
+        try {
+            Calculator.add("-1");
+        } catch (NegativeValueException ne) {
+            Assertions.assertEquals("negatives not allowed -1", ne.getMessage());
+        }
         try{
             Calculator.add("1,-2");
         } catch (NegativeValueException ne) {
@@ -94,6 +100,11 @@ class CalculatorTest {
 
     @Test
     void add_numbersWithSomeNegativeNumbersAndCustomDelimiter_throwException() {
+        try {
+            Calculator.add("-1\n");
+        } catch (NegativeValueException ne) {
+            Assertions.assertEquals("negatives not allowed -1", ne.getMessage());
+        }
         try{
             Calculator.add("//;\n1\n;-2");
         } catch (NegativeValueException ne) {
@@ -109,6 +120,16 @@ class CalculatorTest {
         } catch (NegativeValueException ne) {
             Assertions.assertEquals("negatives not allowed -25,-15", ne.getMessage());
         }
+    }
+
+    @Test
+    void add_numbersWithInvalidNumbers_addedResultWithSkippedInvalid() throws NegativeValueException {
+        Assertions.assertEquals(0, Calculator.add("1001"));
+        Assertions.assertEquals(2, Calculator.add("1,1,1001"));
+        Assertions.assertEquals(22, Calculator.add("10,12,2354"));
+        Assertions.assertEquals(3, Calculator.add("//,\n1,4999,2"));
+        Assertions.assertEquals(25, Calculator.add("//'\n1'2\n3'4\n2555'15"));
+        Assertions.assertEquals(5, Calculator.add("1\n,2800,3000,4"));
     }
 
     @Test
@@ -157,6 +178,12 @@ class CalculatorTest {
         } catch (NegativeValueException ne) {
             Assertions.assertEquals("negatives not allowed -25,-15", ne.getMessage());
         }
+    }
+
+    @Test
+    void sumOfStringArr_someInvalidNumbers_addedResultWithSkippedInvalid() throws NegativeValueException {
+        Assertions.assertEquals(4, Calculator.sumOfStringArr(new String[]{"1", "2000", "3"}));
+        Assertions.assertEquals(6, Calculator.sumOfStringArr(new String[]{"1","2","3","4893","2123000","15555"}));
     }
 
 }
